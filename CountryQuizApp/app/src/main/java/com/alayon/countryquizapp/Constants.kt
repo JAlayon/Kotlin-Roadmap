@@ -14,56 +14,56 @@ object Constants{
 
         val question2 = Question(2, gralQuestion,
             R.drawable.ic_flag_of_australia,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
-            1)
+            "Germany", "Mexico",
+            "Australia", "Belgium",
+            3)
 
         val question3 = Question(3, gralQuestion,
             R.drawable.ic_flag_of_belgium,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
-            1)
+            "Colombia", "Fiji",
+            "Armenia", "Belgium",
+            4)
 
         val question4 = Question(4, gralQuestion,
             R.drawable.ic_flag_of_brazil,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
-            1)
+            "Germany", "Brazil",
+            "United States", "Canada",
+            2)
 
         val question5 = Question(5, gralQuestion,
             R.drawable.ic_flag_of_denmark,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
-            1)
+            "Australia", "Germany",
+            "Denmark", "Austria",
+            3)
 
         val question6 = Question(6, gralQuestion,
             R.drawable.ic_flag_of_fiji,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
+            "Fiji", "Canada",
+            "Brazil", "Australia",
             1)
 
         val question7 = Question(7, gralQuestion,
             R.drawable.ic_flag_of_germany,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
+            "Germany", "Hungary",
+            "Denmark", "Brazil",
             1)
 
         val question8 = Question(8, gralQuestion,
             R.drawable.ic_flag_of_india,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
-            1)
+            "Mexico", "Colombia",
+            "United States", "India",
+            4)
 
         val question9 = Question(9, gralQuestion,
             R.drawable.ic_flag_of_kuwait,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
-            1)
+            "New Zealand", "Kuwait",
+            "Belgium", "Japan",
+            2)
 
         val question10 = Question(10, gralQuestion,
             R.drawable.ic_flag_of_new_zealand,
-            "Argentina", "Australia",
-            "Armenia", "Austria",
+            "New Zealand", "Australia",
+            "United Kingdom", "Brazil",
             1)
 
         questionList.add(question1)
