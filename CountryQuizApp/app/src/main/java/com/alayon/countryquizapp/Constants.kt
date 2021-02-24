@@ -2,6 +2,10 @@ package com.alayon.countryquizapp
 
 object Constants{
 
+    const val USER_NAME: String = "user_name"
+    const val TOTAL_QUESTIONS:String = "total_questions"
+    const val CORRECT_ANSWERS:String = "correct_ans"
+
     fun getQuestions(): ArrayList<Question>{
         val questionList = ArrayList<Question>()
         val gralQuestion:String="What country does this flag belong to?"

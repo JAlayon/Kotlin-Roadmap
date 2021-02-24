@@ -1,5 +1,6 @@
 package com.alayon.countryquizapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -18,13 +19,16 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mQuestionList:ArrayList<Question>?=null
     private val options:ArrayList<TextView> = ArrayList()
     private var mCurrentPosition:Int = 1
-
+    private var mCorrectAnswers:Int = 0
+    private var mUserName:String? = null
     private var mSelectedOptionPosition:Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
+
+        mUserName = intent.getStringExtra(Constants.USER_NAME)
 
         mQuestionList = Constants.getQuestions()
         setQuestion()
@@ -41,29 +45,41 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onSubmit(){
-        if (mSelectedOptionPosition == 0){
-            mCurrentPosition++
-
-            when{
-                mCurrentPosition <= mQuestionList!!.size -> {
-                    setQuestion()
-                }else ->{
-                    Toast.makeText(this, "You have successfully completed the Quiz!", Toast.LENGTH_SHORT).show()
+        if(mSelectedOptionPosition == 0){
+            Toast.makeText(this, "You need to select an answer!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        when (btnSubmit.text) {
+            "SUBMIT" -> {
+                val question = mQuestionList?.get(mCurrentPosition-1)
+                if (question!!.correctAnswer !=  mSelectedOptionPosition){
+                    answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
+                }else{
+                    mCorrectAnswers++
+                }
+                answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
+                if(mCurrentPosition == mQuestionList!!.size){
+                    btnSubmit.text = "!"
+                }else {
+                    btnSubmit.text = "GO TO NEXT QUESTION"
                 }
             }
-        }else{
-            val question = mQuestionList?.get(mCurrentPosition-1)
-            if (question!!.correctAnswer !=  mSelectedOptionPosition){
-                answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
+            "GO TO NEXT QUESTION", "FINISH" -> {
+                mCurrentPosition++
+                when{
+                    mCurrentPosition <= mQuestionList!!.size -> {
+                        setQuestion()
+                    }else ->{
+                        val intent = Intent(this, ResultActivity::class.java)
+                        intent.putExtra(Constants.USER_NAME, mUserName)
+                        intent.putExtra(Constants.CORRECT_ANSWERS, mCorrectAnswers)
+                        intent.putExtra(Constants.TOTAL_QUESTIONS, mQuestionList!!.size)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+                mSelectedOptionPosition = 0
             }
-            answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
-
-            if(mCurrentPosition == mQuestionList!!.size){
-                btnSubmit.text = "FINISH!"
-            }else{
-                btnSubmit.text = "GO TO NEXT QUESTION"
-            }
-            mSelectedOptionPosition = 0
         }
     }
 
