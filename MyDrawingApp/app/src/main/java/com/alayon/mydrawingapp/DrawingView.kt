@@ -3,11 +3,13 @@ package com.alayon.mydrawingapp
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 
 class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
 
+    private val paths = ArrayList<CustomPath>()
     private var drawingPath: CustomPath? = null
     private var canvasBitmap: Bitmap? = null
     private var drawPaint: Paint? = null
@@ -15,6 +17,7 @@ class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
     private var brushSize: Float = 0.toFloat()
     private var color = Color.BLACK
     private var canvas: Canvas? = null
+
 
     init {
         setupDrawing()
@@ -34,6 +37,12 @@ class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawBitmap(canvasBitmap!!, 0f, 0f, canvasPaint)
+
+        for (path in paths){
+            drawPaint!!.strokeWidth = path.brushThickness
+            drawPaint!!.color = path!!.color
+            canvas.drawPath(path, drawPaint!!)
+        }
         if (!drawingPath!!.isEmpty) {
             drawPaint!!.strokeWidth = drawingPath!!.brushThickness
             drawPaint!!.color = drawingPath!!.color
@@ -57,6 +66,7 @@ class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
                 drawingPath!!.lineTo(touchX!!, touchY!!)
             }
             MotionEvent.ACTION_UP ->{
+                paths.add(drawingPath!!)
                 drawingPath = CustomPath(color, brushSize)
             }
             else -> return false
@@ -71,6 +81,10 @@ class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
         canvas = Canvas(canvasBitmap!!)
     }
 
+    fun setSizeForBrush(newSize:Float){
+        brushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics)
+        drawPaint!!.strokeWidth = brushSize
+    }
     internal inner class CustomPath(var color:Int, var brushThickness:Float): Path(){
 
     }
