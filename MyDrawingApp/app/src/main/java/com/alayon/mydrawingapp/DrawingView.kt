@@ -17,6 +17,7 @@ class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
     private var brushSize: Float = 0.toFloat()
     private var color = Color.BLACK
     private var canvas: Canvas? = null
+    private val undoPaths = ArrayList<CustomPath>()
 
 
     init {
@@ -31,7 +32,6 @@ class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
         drawPaint!!.strokeJoin = Paint.Join.ROUND
         drawPaint!!.strokeCap = Paint.Cap.ROUND
         canvasPaint = Paint(Paint.DITHER_FLAG)
-        brushSize = 20.toFloat()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -84,6 +84,32 @@ class DrawingView(context:Context, attrs:AttributeSet) : View(context, attrs) {
     fun setSizeForBrush(newSize:Float){
         brushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, resources.displayMetrics)
         drawPaint!!.strokeWidth = brushSize
+    }
+
+    fun setColor(newColor:String){
+        color = Color.parseColor(newColor)
+        drawPaint!!.color = color
+    }
+
+    fun undo(){
+        if(paths.isNotEmpty()){
+            undoPaths.add(paths.removeAt(paths.size -1))
+            invalidate()
+        }
+    }
+
+    fun redo(){
+        if(undoPaths.isNotEmpty()){
+            paths.add(undoPaths.removeAt(undoPaths.size -1))
+            invalidate()
+        }
+    }
+
+    fun clearAll(){
+        if (paths.isNotEmpty()){
+            paths.clear()
+            invalidate()
+        }
     }
     internal inner class CustomPath(var color:Int, var brushThickness:Float): Path(){
 
